@@ -85,9 +85,9 @@ section{padding-block:0 46px}
 h2.sec{font-weight:600;font-size:22px;line-height:1.3;margin:52px 0 18px;padding-bottom:10px;letter-spacing:-.015em;border-bottom:2px solid var(--ink);color:var(--ink)}
 h2.sec span{background:none;padding:0}
 h2.sub{font-family:var(--disp);font-weight:800;font-size:18px;margin:30px 0 14px}
-h2.sub span{background:linear-gradient(transparent 46%, var(--hl) 46%, var(--hl) 92%, transparent 92%);padding:0 5px 0 2px}
-h3.step{font-family:var(--disp);font-weight:800;font-size:16px;margin:38px 0 12px;scroll-margin-top:70px}
-h3.step span{background:linear-gradient(transparent 46%, var(--hl) 46%, var(--hl) 94%, transparent 94%);padding:0 5px 0 2px}
+h2.sub span{background:none;padding:0}
+h3.step{font-weight:600;font-size:15px;margin:40px 0 14px;scroll-margin-top:70px;letter-spacing:-.01em;color:var(--ink);padding-bottom:7px;border-bottom:1px solid var(--line)}
+h3.step span{background:none;padding:0}
 p{margin:0 0 15px;max-width:66ch;color:var(--ink-soft)}
 p strong,p b{color:var(--ink);font-weight:600}
 .lede{font-size:18px;color:var(--ink);line-height:1.68;max-width:62ch}
@@ -158,6 +158,11 @@ ul.did li b{color:var(--ink);font-weight:600}
 .crumb a{text-decoration:none}
 h1.detail{font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1.18;margin-bottom:10px;color:var(--ink)}
 @media (max-width:600px){h1.detail{font-size:26px}}
+.proves{margin:18px 0 22px;padding:15px 18px;border-left:3px solid var(--accent);
+  background:var(--hl-soft);border-radius:0 6px 6px 0}
+.proves span{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  font-family:var(--mono);color:var(--accent);margin-bottom:6px}
+.proves p{margin:0;font-size:15.5px;line-height:1.6;font-weight:600;color:var(--ink);max-width:none}
 .taglabel{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--chip-ink);
           background:var(--chip-bg);border-radius:3px;padding:2px 9px;margin-bottom:10px}
 
@@ -421,8 +426,7 @@ section{padding-block:0 54px}
 .lk.gh{border-color:var(--ink-faint)}
 .lk.web{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
 .lk.web:hover{color:#fff;filter:brightness(1.08)}
-.lk.web::before{content:"F517  ";font-size:12px}
-.lk.doc::before{content:"F4C4  ";font-size:12px}
+.lk.doc::before{content:"";display:inline-block;width:3px;height:11px;margin-right:7px;background:var(--ink-faint);border-radius:1px}
 
 .pline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:26px 0 0}
 .printbtn{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--accent);
