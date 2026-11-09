@@ -220,6 +220,7 @@ figcaption{font-size:12.5px;color:var(--ink-faint);margin-top:7px;line-height:1.
 
 .issue{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;
        background:var(--surface);padding:18px 20px;margin-bottom:14px}
+.iwhen{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--ink-faint);border:1px solid var(--line);border-radius:3px;padding:2px 7px;margin-bottom:9px}
 .issue h4{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:8px;line-height:1.45}
 .issue h4::before{content:"";display:inline-block;width:3px;height:14px;margin-right:9px;vertical-align:-1px;background:var(--warn);border-radius:1px}
 .issue p{font-size:14.5px;margin-bottom:12px;max-width:none}
