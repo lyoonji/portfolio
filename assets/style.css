@@ -187,7 +187,15 @@ h1.detail{font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1.18;
 @media (max-width:620px){.meta{grid-template-columns:1fr 1fr}}
 .meta .k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
 .meta .v{font-size:14.5px;color:var(--ink)}
-.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
+/* 거시 → 미시: 대표 숫자 하나를 먼저 보게 하고 나머지가 받친다 */
+.tiles{display:grid;grid-template-columns:minmax(230px,.9fr) 1.6fr;gap:14px;margin-bottom:26px;align-items:stretch}
+@media (max-width:720px){.tiles{grid-template-columns:1fr}}
+.tilerest{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.tile.lead{border-top-width:4px;background:linear-gradient(180deg,var(--metric-soft) 0%,var(--surface) 70%);
+  display:flex;flex-direction:column;justify-content:center;padding:20px 22px}
+.tile.lead .n{font-size:40px;letter-spacing:-.02em;color:var(--metric)}
+.tile.lead .l{font-size:13.5px;margin-top:6px;color:var(--ink)}
+@media (max-width:720px){.tile.lead .n{font-size:32px}}
 .tile{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--metric);border-radius:12px;padding:12px 14px}
 .tile .n{display:block;font-family:var(--mono);font-size:27px;font-weight:500;color:var(--ink);line-height:1.2;font-variant-numeric:tabular-nums}
 .tile .l{display:block;font-size:12.5px;color:var(--ink-soft);line-height:1.45;margin-top:2px}
