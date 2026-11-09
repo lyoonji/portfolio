@@ -228,9 +228,11 @@ details .dbody>p:last-child,details .dbody>div:last-child{margin-bottom:0}
 .matrixwrap{overflow-x:auto;border:1px solid var(--line);border-radius:5px;background:var(--surface);margin-bottom:8px}
 table.matrix{border-collapse:collapse;width:100%;min-width:820px}
 table.matrix th,table.matrix td{border-bottom:1px solid var(--line-soft);padding:9px 6px;text-align:center;vertical-align:middle}
-table.matrix thead th{border-bottom:1px solid var(--line);vertical-align:bottom;height:118px;width:64px;padding:0 0 10px}
-table.matrix th.cap span{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--sans);font-size:12.5px;
-  font-weight:500;color:var(--ink-soft);letter-spacing:0;text-transform:none;white-space:nowrap}
+table.matrix thead th{border-bottom:1px solid var(--line);vertical-align:top;height:124px;width:64px;padding:10px 0 0}
+/* 세로 머리글 — vertical-rl 만 쓰고 180도 돌리지 않는다. 돌리면 아래에서 위로 읽혀 읽기 어렵다. */
+table.matrix th.cap span{writing-mode:vertical-rl;text-orientation:mixed;font-family:var(--sans);font-size:12.5px;
+  font-weight:500;color:var(--ink-soft);letter-spacing:0;text-transform:none;white-space:nowrap;
+  display:inline-block;line-height:1.15}
 table.matrix th.pn{text-align:left;width:230px;font-family:var(--sans);font-size:13.5px;font-weight:500;
   letter-spacing:0;text-transform:none;color:var(--ink);padding-left:15px;white-space:normal}
 table.matrix th.pn a{text-decoration:none;color:var(--ink)}
