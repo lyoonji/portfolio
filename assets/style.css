@@ -187,6 +187,22 @@ figure{margin:0 0 18px}
 figure img{border:1px solid var(--line);border-radius:12px;background:var(--surface);width:100%}
 figcaption{font-size:12.5px;color:var(--ink-faint);margin-top:7px;line-height:1.5}
 .gal2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+/* 세로로 긴 앱 화면 — 폭 상한을 둬 한 장만 있어도 커지지 않게 한다 */
+.galtall{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,196px));gap:16px;
+  justify-content:start;margin:4px 0 22px}
+.galtall figure{margin:0}
+/* 그림이 많을 때 — 한 줄로 두고 가로로 넘겨 본다 */
+.galstrip{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding-bottom:12px;margin:4px 0 6px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.galstrip figure{flex:0 0 clamp(250px,44%,360px);scroll-snap-align:start;margin:0}
+.galstrip figcaption{font-size:11.5px;line-height:1.45;margin-top:6px}
+.galstrip::-webkit-scrollbar{height:9px}
+.galstrip::-webkit-scrollbar-thumb{background:var(--line);border-radius:5px}
+.galstrip::-webkit-scrollbar-thumb:hover{background:var(--ink-faint)}
+.galstrip::-webkit-scrollbar-track{background:transparent}
+.galhint{font-size:11.5px;color:var(--ink-faint);margin:0 0 20px;letter-spacing:.01em}
+.galtall figcaption{font-size:11.5px;line-height:1.45;margin-top:6px}
+@media (max-width:640px){.galtall{grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}}
 
 .datatable{border:1px solid var(--line);border-radius:5px;background:var(--surface);overflow:hidden}
 .datarow{display:grid;grid-template-columns:150px 1fr;gap:0;border-bottom:1px solid var(--line-soft)}
@@ -526,6 +542,10 @@ footer a{color:var(--ink-faint)}
   figure{break-inside:avoid;margin-bottom:10px}
   figure img{border:1px solid #ccc;border-radius:6px}
   .gal2{grid-template-columns:1fr 1fr;gap:10px}
+  .galstrip{display:grid;grid-template-columns:1fr 1fr;gap:10px;overflow:visible}
+  .galstrip figure{flex:none}
+  .galhint{display:none}
+  .galtall{grid-template-columns:repeat(4,1fr);gap:8px}
   .stagewrap{border:1px solid #ccc;border-radius:6px;padding:10px 13px;margin-bottom:12px;break-inside:avoid}
 
   footer{border-top:1px solid #bbb;padding-top:8px;margin-top:14px;font-size:8.4pt;color:#555}
