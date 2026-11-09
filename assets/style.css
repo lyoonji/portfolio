@@ -127,7 +127,14 @@ ul.did li::before{content:"";position:absolute;left:1px;top:.68em;width:6px;heig
 ul.did li b{color:var(--ink);font-weight:600}
 
 .can{display:grid;gap:13px;margin-top:16px}
-.can-row{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:17px 19px}
+.can-row{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.can-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.lv{flex:none;font-size:11.5px;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:3px}
+.lv-hi{background:var(--accent);color:#fff}
+.lv-mid{background:var(--chip-bg);color:var(--chip-ink)}
+.can-bar{height:6px;border-radius:3px;background:var(--line-soft);margin:11px 0 7px;overflow:hidden}
+.can-bar i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.can-count{font-size:11.5px;color:var(--ink-faint);font-family:var(--mono);margin-bottom:10px}
 .can-t{font-family:var(--disp);font-weight:800;font-size:17.5px;line-height:1.45;color:var(--ink);margin-bottom:7px}
 .can-d{font-size:14px;color:var(--ink-soft);line-height:1.7;margin:0 0 11px}
 .can-e{display:flex;flex-wrap:wrap;gap:7px}
@@ -237,6 +244,11 @@ figcaption{font-size:12.5px;color:var(--ink-faint);margin-top:7px;line-height:1.
 .fit .fh{font-size:15.5px;font-weight:600;color:var(--ink);margin-bottom:4px}
 .fit .fh::before{content:"";display:inline-block;width:3px;height:13px;margin-right:8px;vertical-align:-1px;background:var(--accent);border-radius:1px}
 .fit .fs{font-size:13px;color:var(--ink-faint);margin-bottom:12px}
+.fitgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:13px}
+.fitcard{background:var(--hl-soft);border:1px solid var(--line);border-radius:9px;padding:14px 16px;
+  font-size:13.5px;line-height:1.72;color:var(--ink-soft)}
+.fitcard b{color:var(--ink)}
+@media (max-width:620px){.fitgrid{grid-template-columns:1fr}}
 .fit ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:14px}
 .fit li{font-size:14.5px;color:var(--ink-soft);line-height:1.7}
 .fit li b{color:var(--ink)}
