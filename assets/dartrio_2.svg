@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1060" viewBox="0 0 1600 1060" role="img" aria-labelledby="title desc">
+  <title id="title">공시 인제스천 정규화와 통합 적재 흐름</title>
+  <desc id="desc">네 doc group의 원문이 공통 정규화를 거쳐 shard로 저장되고, P2의 전역 정정 해소를 거쳐 최종 인덱스로 적재되는 흐름</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#52657a"/></marker>
+    <style>
+      .bg{fill:#f7fafc}.panel{fill:#ffffff;stroke:#cbd5e1;stroke-width:2}.common{fill:#e0f2fe;stroke:#0284c7}.owner1{fill:#f3e8ff;stroke:#9333ea}.owner2{fill:#dcfce7;stroke:#16a34a}.owner3{fill:#ffedd5;stroke:#ea580c}.out{fill:#e2e8f0;stroke:#475569}.final{fill:#dbeafe;stroke:#2563eb}.warn{fill:#fef3c7;stroke:#d97706}.title{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;font-weight:700;fill:#12263a}.label{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;font-size:20px;fill:#12263a}.small{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;font-size:16px;fill:#334155}.tiny{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;font-size:14px;fill:#475569}.arrow{stroke:#52657a;stroke-width:3;fill:none;marker-end:url(#arrow)}.dash{stroke:#d97706;stroke-width:3;fill:none;stroke-dasharray:9 8;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect class="bg" width="1600" height="1060"/>
+  <text x="800" y="48" text-anchor="middle" class="title" font-size="31">공시 인제스천: 공통 정규화 → shard → 정정 통합 resolve → 최종 적재</text>
+  <text x="800" y="78" text-anchor="middle" class="small">실선은 데이터 흐름, 점선은 정정본 문서에서만 생성되는 보조 흐름입니다.</text>
+
+  <rect x="55" y="126" rx="14" ry="14" width="250" height="144" class="panel"/>
+  <text x="180" y="160" text-anchor="middle" class="title" font-size="22">입력</text>
+  <text x="180" y="195" text-anchor="middle" class="label">manifest.jsonl</text>
+  <text x="180" y="222" text-anchor="middle" class="small">기업·접수번호·접수일·제목</text>
+  <text x="180" y="249" text-anchor="middle" class="small">+ raw 원문(XML/HTML/PDF)</text>
+
+  <rect x="385" y="105" rx="14" ry="14" width="400" height="184" class="common"/>
+  <text x="585" y="141" text-anchor="middle" class="title" font-size="22">공통 메타데이터 · 문자열 정규화</text>
+  <text x="585" y="174" text-anchor="middle" class="small">nfc / nfd · clean_text · norm_label</text>
+  <text x="585" y="201" text-anchor="middle" class="small">parse_dart_date · parse_number · make_doc_id</text>
+  <text x="585" y="231" text-anchor="middle" class="tiny">문서 ID: dart_{rcept_no}; corp_code는 문자열로 보존</text>
+  <text x="585" y="259" text-anchor="middle" class="tiny">결과: 공통 메타 + 형식별 파서가 받을 정규화된 입력</text>
+  <path d="M305 198 H385" class="arrow"/>
+
+  <text x="1065" y="115" text-anchor="middle" class="title" font-size="22">doc_group별 파싱과 모델 조립</text>
+  <rect x="850" y="140" rx="14" ry="14" width="400" height="120" class="owner1"/>
+  <text x="875" y="175" class="title" font-size="20">P1 · periodic</text>
+  <text x="875" y="206" class="small">XML SECTION/TITLE → chunk_by_title → Fact</text>
+  <text x="875" y="234" class="tiny">깊은 section_path, text/table Chunk</text>
+  <rect x="850" y="290" rx="14" ry="14" width="400" height="120" class="owner3"/>
+  <text x="875" y="325" class="title" font-size="20">P3 · major / holding</text>
+  <text x="875" y="356" class="small">얕은 XML / 보유현황 표 → Chunk·Fact</text>
+  <text x="875" y="384" class="tiny">PDF 예외: pymupdf + pdfplumber</text>
+  <rect x="850" y="440" rx="14" ry="14" width="400" height="120" class="owner2"/>
+  <text x="875" y="475" class="title" font-size="20">P2 · exchange</text>
+  <text x="875" y="506" class="small">HTML 폼 → parse_exchange_file → label/value Fact</text>
+  <text x="875" y="534" class="tiny">문서 = Chunk 1개, 관련공시도 별도 추출</text>
+  <path d="M785 198 H850" class="arrow"/>
+  <path d="M785 198 C820 198 815 350 850 350" class="arrow"/>
+  <path d="M785 198 C820 198 815 500 850 500" class="arrow"/>
+
+  <rect x="1310" y="190" rx="14" ry="14" width="235" height="230" class="out"/>
+  <text x="1427" y="226" text-anchor="middle" class="title" font-size="21">담당자별 JSONL shard</text>
+  <text x="1427" y="265" text-anchor="middle" class="small">doc_{group}.jsonl</text>
+  <text x="1427" y="294" text-anchor="middle" class="small">chunk_{group}.jsonl</text>
+  <text x="1427" y="323" text-anchor="middle" class="small">fact_{group}.jsonl</text>
+  <text x="1427" y="361" text-anchor="middle" class="tiny">각 행은 Doc / Chunk / Fact</text>
+  <text x="1427" y="387" text-anchor="middle" class="tiny">Pydantic 검증 후 model_dump()</text>
+  <path d="M1250 200 H1310" class="arrow"/>
+  <path d="M1250 350 H1310" class="arrow"/>
+  <path d="M1250 500 C1285 500 1275 390 1310 390" class="arrow"/>
+
+  <rect x="375" y="650" rx="14" ry="14" width="420" height="144" class="warn"/>
+  <text x="585" y="686" text-anchor="middle" class="title" font-size="21">정정공시 공통 파싱 (문서 1건 단위)</text>
+  <text x="585" y="718" text-anchor="middle" class="small">parse_correction(doc_id, tables, raw_text, hint)</text>
+  <text x="585" y="746" text-anchor="middle" class="tiny">exchange: 정정관련 공시서류… / 나머지: 정정대상 공시서류…</text>
+  <text x="585" y="772" text-anchor="middle" class="tiny">결과: CorrectionDraft (원본 doc_id는 아직 미해소)</text>
+  <path d="M1050 560 C1050 650 860 722 795 722" class="dash"/>
+
+  <rect x="875" y="650" rx="14" ry="14" width="300" height="144" class="out"/>
+  <text x="1025" y="687" text-anchor="middle" class="title" font-size="21">정정 draft shard</text>
+  <text x="1025" y="724" text-anchor="middle" class="small">correction_draft_</text>
+  <text x="1025" y="750" text-anchor="middle" class="small">{group}.jsonl</text>
+  <text x="1025" y="777" text-anchor="middle" class="tiny">P1/P2/P3 모두 같은 계약</text>
+  <path d="M795 722 H875" class="arrow"/>
+
+  <rect x="1230" y="650" rx="14" ry="14" width="315" height="144" class="owner2"/>
+  <text x="1387" y="686" text-anchor="middle" class="title" font-size="21">P2 전역 resolve</text>
+  <text x="1387" y="719" text-anchor="middle" class="small">DocIndex + resolve_corrections</text>
+  <text x="1387" y="747" text-anchor="middle" class="tiny">original_doc_id / method / confidence 확정</text>
+  <text x="1387" y="774" text-anchor="middle" class="tiny">관련공시: resolve_related_edges</text>
+  <path d="M1175 722 H1230" class="arrow"/>
+  <path d="M1427 420 C1427 505 1387 570 1387 650" class="arrow"/>
+
+  <rect x="470" y="875" rx="14" ry="14" width="340" height="125" class="final"/>
+  <text x="640" y="912" text-anchor="middle" class="title" font-size="21">최종 JSONL 논리 테이블</text>
+  <text x="640" y="945" text-anchor="middle" class="small">correction.jsonl · related_edge.jsonl</text>
+  <text x="640" y="973" text-anchor="middle" class="tiny">Correction / RelatedEdge 스키마 검증</text>
+  <path d="M1300 794 C1240 890 910 936 810 936" class="arrow"/>
+
+  <rect x="950" y="875" rx="14" ry="14" width="350" height="125" class="final"/>
+  <text x="1125" y="912" text-anchor="middle" class="title" font-size="21">인덱스·DB 적재</text>
+  <text x="1125" y="945" text-anchor="middle" class="small">Parquet → DuckDB (5 테이블 + 뷰)</text>
+  <text x="1125" y="973" text-anchor="middle" class="tiny">Chunk 임베딩은 별도 FAISS 인덱스</text>
+  <path d="M810 936 H950" class="arrow"/>
+</svg>

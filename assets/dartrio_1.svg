@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560"
+     font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif"
+     role="img" aria-label="공시 Agent 파이프라인 아키텍처: 인제스천 → 정규화(공통 스키마 5테이블) → 인덱스(DuckDB + FAISS) → 질의 처리 6단계(LLM은 1번·6번만) → 출력">
+  <defs>
+    <style>
+      :root{
+        --ink:#1c2523; --muted:#5f6b67; --lane:#eef2f1; --lane-b:#d6ded9;
+        --blue:#2f6ea3;   --blue-f:#e8eff6;
+        --slate:#5c6b76;  --slate-f:#eceff1;
+        --green:#2f8f68;  --green-f:#e4f2eb;
+        --pink:#b6467f;   --pink-f:#f8e8f0;
+        --amber:#9a7420;  --amber-f:#f4efe0;
+        --violet:#6a58a3; --violet-f:#eeeaf6;
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --ink:#e7ece9; --muted:#98a5a0; --lane:#161f1d; --lane-b:#2b3531;
+          --blue:#7fb2da;   --blue-f:#14222c;
+          --slate:#9aa8b1;  --slate-f:#191f22;
+          --green:#5fc79d;  --green-f:#12241d;
+          --pink:#e483b5;   --pink-f:#24121f;
+          --amber:#dcae59;  --amber-f:#231e13;
+          --violet:#a998dc; --violet-f:#1b1730;
+        }
+      }
+      text{fill:var(--ink)}
+      .lane{fill:var(--lane);stroke:var(--lane-b);stroke-width:1}
+      .lane-t{fill:var(--muted);font-size:12px;font-weight:700;letter-spacing:.06em}
+      .b{stroke-width:1.5}
+      .t{font-size:12.5px}
+      .t-strong{font-size:12.5px;font-weight:700}
+      .s{fill:var(--muted);font-size:10.5px}
+      .arrow{stroke:var(--muted);stroke-width:1.6;fill:none}
+      .blue  {fill:var(--blue-f);stroke:var(--blue)}
+      .slate {fill:var(--slate-f);stroke:var(--slate)}
+      .green {fill:var(--green-f);stroke:var(--green)}
+      .pink  {fill:var(--pink-f);stroke:var(--pink)}
+      .amber {fill:var(--amber-f);stroke:var(--amber)}
+      .violet{fill:var(--violet-f);stroke:var(--violet)}
+      .pill{fill:var(--pink);}
+      .pill-t{fill:#fff;font-size:9px;font-weight:700;letter-spacing:.04em}
+    </style>
+    <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/>
+    </marker>
+  </defs>
+
+  <!-- ================= TOP ROW ================= -->
+
+  <!-- 인제스천 -->
+  <rect class="lane" x="16" y="40" width="250" height="216" rx="10"/>
+  <text class="lane-t" x="30" y="64">인제스천  ·  INGESTION</text>
+  <text class="s" x="30" y="80">doc_group별 파서 분기 (4+2갈래)</text>
+  <g>
+    <rect class="blue b" x="30" y="90"  width="222" height="27" rx="7"/><text class="t" x="41" y="107">raw/periodic · XML SECTION 트리</text>
+    <rect class="blue b" x="30" y="122" width="222" height="27" rx="7"/><text class="t" x="41" y="139">raw/major · 얕은 XML</text>
+    <rect class="blue b" x="30" y="154" width="222" height="27" rx="7"/><text class="t" x="41" y="171">raw/exchange · HTML 라벨-값 폼</text>
+    <rect class="blue b" x="30" y="186" width="222" height="27" rx="7"/><text class="t" x="41" y="203">raw/holding · XML 표</text>
+    <rect class="blue b" x="30" y="218" width="222" height="27" rx="7"/><text class="t" x="41" y="235">pdf+html 예외 3건</text>
+  </g>
+
+  <!-- 정규화 -->
+  <rect class="lane" x="300" y="40" width="284" height="216" rx="10"/>
+  <text class="lane-t" x="314" y="64">정규화  ·  NORMALIZE</text>
+  <text class="s" x="314" y="80">공통 스키마 v1.0 · parquet 5테이블</text>
+  <g>
+    <rect class="slate b" x="314" y="90"  width="256" height="27" rx="7"/><text class="t-strong" x="325" y="107">doc</text><text class="s" x="360" y="107">논리 문서 4,204건</text>
+    <rect class="slate b" x="314" y="122" width="256" height="27" rx="7"/><text class="t-strong" x="325" y="139">chunk</text><text class="s" x="370" y="139">텍스트·표 유닛</text>
+    <rect class="slate b" x="314" y="154" width="256" height="27" rx="7"/><text class="t-strong" x="325" y="171">fact</text><text class="s" x="358" y="171">구조화 필드</text>
+    <rect class="slate b" x="314" y="186" width="256" height="27" rx="7"/><text class="t-strong" x="325" y="203">correction</text><text class="s" x="398" y="203">정정 엣지</text>
+    <rect class="slate b" x="314" y="218" width="256" height="27" rx="7"/><text class="t-strong" x="325" y="235">related_edge</text><text class="s" x="418" y="235">이벤트 생애주기 엣지</text>
+  </g>
+
+  <!-- 인덱스 -->
+  <rect class="lane" x="618" y="40" width="326" height="216" rx="10"/>
+  <text class="lane-t" x="632" y="64">인덱스  ·  INDEX</text>
+  <text class="s" x="632" y="80">단일 인덱스, doc_group은 메타 필터로만</text>
+  <rect class="green b" x="632" y="98"  width="298" height="52" rx="10"/>
+  <text class="t-strong" x="648" y="120">DuckDB</text><text class="s" x="648" y="138">parquet 5테이블 · 메타데이터 필터</text>
+  <rect class="green b" x="632" y="166" width="298" height="52" rx="10"/>
+  <text class="t-strong" x="648" y="188">FAISS HNSW</text><text class="s" x="648" y="206">BGE-M3 dense + sparse</text>
+
+  <!-- top-row arrows -->
+  <path class="arrow" marker-end="url(#ah)" d="M266,148 H300"/>
+  <path class="arrow" marker-end="url(#ah)" d="M584,148 H618"/>
+
+  <!-- index -> query pipeline (feeds step ①) -->
+  <path class="arrow" marker-end="url(#ah)" d="M781,256 C781,300 150,282 92,330"/>
+  <text class="s" x="452" y="272">인덱스 → 질의 파이프라인 ① 진입</text>
+
+  <!-- ================= QUERY PIPELINE ================= -->
+  <rect class="lane" x="16" y="316" width="928" height="150" rx="10"/>
+  <text class="lane-t" x="30" y="340">질의 처리  ·  ORCHESTRATION</text>
+  <text class="s" x="214" y="340">— LLM은 ① 슬롯 분해와 ⑥ 답변 조립, 두 지점에서만 호출</text>
+
+  <!-- 6 steps -->
+  <g>
+    <!-- ① -->
+    <rect class="pink b" x="30" y="352" width="142" height="86" rx="9"/>
+    <rect class="pill" x="132" y="346" width="34" height="15" rx="7.5"/><text class="pill-t" x="139" y="357">LLM</text>
+    <text class="t-strong" x="44" y="378">① 슬롯 분해</text>
+    <text class="s" x="44" y="396">· Intent 판정</text>
+    <text class="s" x="44" y="412">HCX-DASH-002</text>
+    <text class="s" x="44" y="428">→ filters JSON</text>
+    <!-- ② -->
+    <rect class="amber b" x="184" y="352" width="142" height="86" rx="9"/>
+    <text class="t-strong" x="198" y="378">② 계층 검색</text>
+    <text class="s" x="198" y="396">DuckDB 메타필터</text>
+    <text class="s" x="198" y="412">→ 벡터 top-k</text>
+    <text class="s" x="198" y="428">→ 재필터</text>
+    <!-- ③ -->
+    <rect class="amber b" x="338" y="352" width="142" height="86" rx="9"/>
+    <text class="t-strong" x="352" y="378">③ 버전·이벤트</text>
+    <text class="t-strong" x="352" y="394">해소</text>
+    <text class="s" x="352" y="412">correction /</text>
+    <text class="s" x="352" y="428">related_edge 조인</text>
+    <!-- ④ -->
+    <rect class="amber b" x="492" y="352" width="142" height="86" rx="9"/>
+    <text class="t-strong" x="506" y="378">④ 정합성 게이트</text>
+    <text class="s" x="506" y="396">metric · period</text>
+    <text class="s" x="506" y="412">unit · basis</text>
+    <text class="s" x="506" y="428">일치 검사</text>
+    <!-- ⑤ -->
+    <rect class="amber b" x="646" y="352" width="142" height="86" rx="9"/>
+    <text class="t-strong" x="660" y="378">⑤ 결정론적 계산</text>
+    <text class="s" x="660" y="396">FinQA식 DSL</text>
+    <text class="s" x="660" y="412">프로그램 실행</text>
+    <text class="s" x="660" y="428">(LLM 미개입)</text>
+    <!-- ⑥ -->
+    <rect class="pink b" x="800" y="352" width="130" height="86" rx="9"/>
+    <rect class="pill" x="890" y="346" width="34" height="15" rx="7.5"/><text class="pill-t" x="897" y="357">LLM</text>
+    <text class="t-strong" x="814" y="378">⑥ 답변 조립</text>
+    <text class="s" x="814" y="396">HCX-005 / 007</text>
+    <text class="s" x="814" y="412">← 근거 +</text>
+    <text class="s" x="814" y="428">계산 결과</text>
+  </g>
+
+  <!-- inter-step arrows -->
+  <path class="arrow" marker-end="url(#ah)" d="M172,395 H184"/>
+  <path class="arrow" marker-end="url(#ah)" d="M326,395 H338"/>
+  <path class="arrow" marker-end="url(#ah)" d="M480,395 H492"/>
+  <path class="arrow" marker-end="url(#ah)" d="M634,395 H646"/>
+  <path class="arrow" marker-end="url(#ah)" d="M788,395 H800"/>
+
+  <!-- output -->
+  <path class="arrow" marker-end="url(#ah)" d="M865,438 V486 H480 V500"/>
+  <rect class="violet b" x="270" y="500" width="420" height="40" rx="10"/>
+  <text class="t" x="322" y="525">answer  ·  retrieved_context  ·  think_trace</text>
+</svg>
